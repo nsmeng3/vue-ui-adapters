@@ -1,16 +1,25 @@
+<!-- src/components/VuaButton.vue -->
 <template>
-  <component :is="renderComponent()"/>
+  <component :is="renderButton()" />
 </template>
 
 <script setup lang="ts">
-import {inject} from 'vue';
-import {getButtonAdapter} from '@/adapters';
-import {type AdapterType, AdapterTypes} from '~shared/adapter-utils';
+import { inject, type App } from 'vue';
+import { AdapterTypes, type AdapterType } from '@/adapters/adapter-types';
+import { getAdapter } from '@/shared/adapter-utils';
+import * as elementPlusAdapter from '@/adapters/element/button';
+import * as antdvAdapter from '@/adapters/antdv/button';
+import VuaButton from "@/components/VuaButton.vue";
+
+const buttonAdapterMap = {
+  [AdapterTypes.ELEMENT]: elementPlusAdapter.adapter,
+  [AdapterTypes.ANTDV]: antdvAdapter.adapter,
+};
 
 const props = defineProps<{
-  type?: string;        // 按钮类型（如 primary、default）
-  disabled?: boolean;   // 是否禁用
-  adapter?: AdapterType | string; // 适配器类型
+  type?: any;
+  disabled?: boolean;
+  adapter?: AdapterType | string;
 }>();
 
 const emit = defineEmits<{
@@ -18,7 +27,7 @@ const emit = defineEmits<{
 }>();
 
 const vuaConfig = inject<{ defaultAdapter: AdapterType | string }>('vuaConfig', {
-  defaultAdapter: AdapterTypes.DEFAULT,
+  defaultAdapter: AdapterTypes.ELEMENT,
 });
 const resolvedAdapter = props.adapter ?? vuaConfig.defaultAdapter;
 
@@ -26,18 +35,19 @@ function handleClick() {
   emit('click');
 }
 
-function renderComponent() {
-  const {type, disabled} = props;
-  const buttonAdapter = getButtonAdapter(resolvedAdapter);
+function renderButton() {
+  const { type, disabled } = props;
+  const buttonAdapter = getAdapter(resolvedAdapter, buttonAdapterMap);
   return buttonAdapter.renderButton({
     type,
     disabled,
     onClick: handleClick,
-    content: () => slots.default?.({}) || 'Button', // 使用插槽内容或默认文本
+    content: () => slots.default?.({}) || 'Button',
   });
 }
 
 const slots = defineSlots<{
   default?(props: {}): any;
 }>();
+
 </script>

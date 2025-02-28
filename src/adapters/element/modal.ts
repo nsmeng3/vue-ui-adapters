@@ -1,8 +1,8 @@
-// src/adapters/element-plus/modal.ts
+// src/adapters/element/modal.ts
 import { h, type VNode } from 'vue';
 import { ElDialog, ElButton } from 'element-plus';
 
-export const modalAdapter = {
+export const adapter = {
   renderModal({ visible, title, content, onClose, onOk }: {
     visible: boolean;
     title: string;

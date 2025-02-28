@@ -1,23 +1,19 @@
 // src/adapters/antdv/button.ts
-import { h, type VNode ,PropType} from 'vue';
+import { h, type VNode } from 'vue';
 import { Button } from 'ant-design-vue';
 import {ButtonType} from "ant-design-vue/es/button";
 
-export const buttonAdapter = {
+export const adapter = {
   renderButton({ type, disabled, onClick, content }: {
     type?: ButtonType;
     disabled?: any;
     onClick?: () => void;
-    content: any;
+    content: string | (() => any);
   }): VNode {
     return h(
       Button,
-      {
-        type: type,
-        disabled,
-        onClick,
-      },
-      content
+      { type: type || 'default', disabled, onClick },
+      typeof content === 'function' ? content() : content
     );
   },
 };

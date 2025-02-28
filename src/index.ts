@@ -1,30 +1,19 @@
-import {App} from 'vue';
-import VuaModal from './components/VuaModal.vue';
-import VuaButton from './components/VuaButton.vue';
-
-import {getAdapter} from '~shared/adapter-utils';
+import { App, type Plugin } from 'vue';
+import { registerComponents } from './components';
+import { AdapterType, AdapterTypes} from './adapters/adapter-types';
 
 const globalConfig = {
-  defaultAdapter: 'element',
+  defaultAdapter: 'element' as AdapterType,
 };
 
-function setConfig(options: { defaultAdapter?: string } = {}) {
-  console.log('setConfig called with:', options);
-  if (options.defaultAdapter) {
-    globalConfig.defaultAdapter = options.defaultAdapter;
-  }
-}
-
-export { VuaModal, VuaButton, getAdapter, setConfig};
-
-export default {
+const VueUIAdapters: Plugin = {
   install(app: App, options: { defaultAdapter?: string } = {}) {
     console.log('Installing VueUIAdapters with options:', options);
     if (options.defaultAdapter) {
-      globalConfig.defaultAdapter = options.defaultAdapter;
+      globalConfig.defaultAdapter = options.defaultAdapter as AdapterType;
     }
-    app.component('VuaModal', VuaModal);
-    app.component('VuaButton', VuaButton);
+    registerComponents(app); // 注册所有组件
     app.provide('vuaConfig', globalConfig);
   },
 };
+export default VueUIAdapters;
