@@ -1,0 +1,44 @@
+{
+  "name": "vue-ui-adapters",
+  "version": "3.0.0",
+  "description": "Vue UI library adapters for custom components",
+  "main": "dist/index.ts",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "author": "Your Name",
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "adapters",
+    "ui-library",
+    "element-plus",
+    "ant-design-vue"
+  ],
+  "scripts": {
+    "build": "vite build  && vue-tsc --declaration --emitDeclarationOnly ",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "ant-design-vue": "^4.0.0",
+    "element-plus": "^2.0.0",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.7.3",
+    "vite": "^5.0.0",
+    "vue-tsc": "^2.2.4"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "package.json",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "private": true,
+  "dependencies": {
+    "@vue/runtime-core": "^3.5.13"
+  }
+}
