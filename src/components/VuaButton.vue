@@ -4,21 +4,15 @@
 </template>
 
 <script setup lang="ts">
-import { inject, type App } from 'vue';
+import { inject } from 'vue';
 import { AdapterTypes, type AdapterType } from '@/adapters/adapter-types';
-import { getAdapter } from '@/shared/adapter-utils';
-import * as elementPlusAdapter from '@/adapters/element/button';
-import * as antdvAdapter from '@/adapters/antdv/button';
-import VuaButton from "@/components/VuaButton.vue";
-
-const buttonAdapterMap = {
-  [AdapterTypes.ELEMENT]: elementPlusAdapter.adapter,
-  [AdapterTypes.ANTDV]: antdvAdapter.adapter,
-};
+import { createButtonAdapter } from '@/adapters/factory';
+import { type ButtonAdapterProps } from '@/adapters/types';
 
 const props = defineProps<{
-  type?: any;
+  type?: string;
   disabled?: boolean;
+  size?: string;
   adapter?: AdapterType | string;
 }>();
 
@@ -27,27 +21,28 @@ const emit = defineEmits<{
 }>();
 
 const vuaConfig = inject<{ defaultAdapter: AdapterType | string }>('vuaConfig', {
-  defaultAdapter: AdapterTypes.ELEMENT,
+  defaultAdapter: AdapterTypes.DEFAULT,
 });
 const resolvedAdapter = props.adapter ?? vuaConfig.defaultAdapter;
+
+const buttonAdapter = createButtonAdapter(resolvedAdapter);
 
 function handleClick() {
   emit('click');
 }
 
 function renderButton() {
-  const { type, disabled } = props;
-  const buttonAdapter = getAdapter(resolvedAdapter, buttonAdapterMap);
-  return buttonAdapter.renderButton({
+  const { type, disabled, size } = props;
+  return buttonAdapter.render({
     type,
     disabled,
+    size,
     onClick: handleClick,
     content: () => slots.default?.({}) || 'Button',
-  });
+  } as ButtonAdapterProps);
 }
 
 const slots = defineSlots<{
   default?(props: {}): any;
 }>();
-
 </script>

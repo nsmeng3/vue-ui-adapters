@@ -16,4 +16,5 @@ const VueUIAdapters: Plugin = {
     app.provide('vuaConfig', globalConfig);
   },
 };
+export * from "./components";
 export default VueUIAdapters;

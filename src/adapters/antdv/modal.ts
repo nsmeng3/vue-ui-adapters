@@ -1,15 +1,10 @@
 // src/adapters/antdv/modal.ts
 import { h, type VNode } from 'vue';
 import { Modal, Button } from 'ant-design-vue';
+import { type ModalAdapter, type ModalAdapterProps } from '../types';
 
-export const adapter = {
-  renderModal({ visible, title, content, onClose, onOk }: {
-    visible: boolean;
-    title: string;
-    content: string | (() => any);
-    onClose: () => void;
-    onOk: () => void;
-  }): VNode {
+export class AntdvModalAdapter implements ModalAdapter {
+  render({ visible, title, content, onClose, onOk }: ModalAdapterProps): VNode {
     return h(
       Modal,
       {
@@ -25,5 +20,5 @@ export const adapter = {
         default: () => (typeof content === 'function' ? content() : content),
       }
     );
-  },
-};
+  }
+}

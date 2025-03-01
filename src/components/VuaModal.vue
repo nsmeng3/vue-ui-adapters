@@ -4,17 +4,10 @@
 </template>
 
 <script setup lang="ts">
-import { inject, type App } from 'vue';
+import { inject } from 'vue';
 import { AdapterTypes, type AdapterType } from '@/adapters/adapter-types';
-import { getAdapter } from '@/shared/adapter-utils';
-import * as elementPlusAdapter from '@/adapters/element/modal';
-import * as antdvAdapter from '@/adapters/antdv/modal';
-import VuaModal from "@/components/VuaModal.vue";
-
-const modalAdapterMap = {
-  [AdapterTypes.ELEMENT]: elementPlusAdapter.adapter,
-  [AdapterTypes.ANTDV]: antdvAdapter.adapter,
-};
+import { createModalAdapter } from '@/adapters/factory';
+import { type ModalAdapterProps } from '@/adapters/types';
 
 const props = defineProps<{
   visible?: boolean;
@@ -34,6 +27,8 @@ const vuaConfig = inject<{ defaultAdapter: AdapterType | string }>('vuaConfig', 
 });
 const resolvedAdapter = props.adapter ?? vuaConfig.defaultAdapter;
 
+const modalAdapter = createModalAdapter(resolvedAdapter);
+
 function close() {
   emit('update:visible', false);
   emit('cancel');
@@ -46,18 +41,16 @@ function confirm() {
 
 function renderModal() {
   const { visible = false, title = '', content = '' } = props;
-  const modalAdapter = getAdapter(resolvedAdapter, modalAdapterMap);
-  return modalAdapter.renderModal({
+  return modalAdapter.render({
     visible,
     title,
     content: content || (() => slots.default?.({})),
     onClose: close,
     onOk: confirm,
-  });
+  } as ModalAdapterProps);
 }
 
 const slots = defineSlots<{
   default?(props: {}): any;
 }>();
-
 </script>

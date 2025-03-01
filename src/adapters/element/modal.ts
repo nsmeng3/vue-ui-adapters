@@ -1,15 +1,10 @@
 // src/adapters/element/modal.ts
 import { h, type VNode } from 'vue';
 import { ElDialog, ElButton } from 'element-plus';
+import { type ModalAdapter, type ModalAdapterProps } from '../types';
 
-export const adapter = {
-  renderModal({ visible, title, content, onClose, onOk }: {
-    visible: boolean;
-    title: string;
-    content: string | (() => any);
-    onClose: () => void;
-    onOk: () => void;
-  }): VNode {
+export class ElementModalAdapter implements ModalAdapter {
+  render({ visible, title, content, onClose, onOk }: ModalAdapterProps): VNode {
     return h(
       ElDialog,
       { modelValue: visible, title, onClose },
@@ -22,5 +17,5 @@ export const adapter = {
           ]),
       }
     );
-  },
-};
+  }
+}

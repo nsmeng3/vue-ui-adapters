@@ -1,5 +1,5 @@
-// src/adapters/adapter-types.ts
 export const AdapterTypes = {
+  DEFAULT: 'element',
   ELEMENT: 'element',
   ANTDV: 'antdv',
 } as const;

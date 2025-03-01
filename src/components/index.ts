@@ -16,5 +16,4 @@ export function registerComponents(app: App) {
   });
 }
 
-// 导出组件（可选）
 export { VuaModal, VuaButton };
