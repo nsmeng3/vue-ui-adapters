@@ -31,3 +31,17 @@ export interface ModalAdapterProps {
 export interface ModalAdapter extends UIAdapter<ModalAdapterProps> {
   render: (props: ModalAdapterProps) => VNode;
 }
+
+// 输入框适配器参数和接口
+export interface InputAdapterProps {
+  value?: string;              // 输入值
+  placeholder?: string;        // 占位符
+  disabled?: boolean;          // 是否禁用
+  size?: 'large' | 'default' | 'small';               // 大小
+  onInput?: (value: string) => void; // 输入事件
+  onChange?: (value: string) => void; // 变化事件
+}
+
+export interface InputAdapter extends UIAdapter<InputAdapterProps> {
+  render: (props: InputAdapterProps) => VNode;
+}

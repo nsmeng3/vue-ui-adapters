@@ -8,7 +8,7 @@ export class AntdvModalAdapter implements ModalAdapter {
     return h(
       Modal,
       {
-        visible,
+        open: visible,
         title,
         onCancel: onClose,
         footer: [
